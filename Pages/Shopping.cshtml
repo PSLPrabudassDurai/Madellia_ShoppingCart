@@ -1,0 +1,306 @@
+﻿@page "/Shopping"
+@using SuperMarket_ShoppingCart.Shared
+@using SuperMarket_ShoppingCart.Models
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Components
+@using SuperMarket_ShoppingCart.Shared.Models
+
+@inject HttpClient Http
+
+@if (Messages != "")
+{
+    <div id="outPopUp" style="position: absolute;  width: 552px;  height: 252px;  z-index: 15;  top: 20%;  left: 50%;  margin: -100px 0 0 -150px;  background: #f6cd2f;">
+        <div id="outPopUp" style="position: absolute;  width: 550px;  height: 248px;    background: #360849;">            
+            <span style="color:#ECF3F4;font-size:xx-large;display: inline-block;    margin: 10px 10px 0 0;   padding: 5px 10px ">
+                @Messages
+            </span>
+        </div>
+
+    </div>
+}
+
+<table id="tblContainer" style='width: 99%;table-layout:fixed;'>
+    <tr>
+        <td>
+            @if (showAddtoCart == true)
+            {
+                <table style="background-color:#FFFFFF; border: dashed 3px #d55500; padding: 5px;width: 99%;table-layout:fixed;" cellpadding="2"
+                       cellspacing="6">
+                    <tr style="height: 30px;  color:#336699 ;border: solid 1px #659EC7;">
+                        <td width="40px"> <img src="Images/shopping_cart64.png" height="38" width="38" /></td>
+                        <td>
+                           
+                            <h2> <strong>Add Items to Cart</strong></h2>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td width="10px">&nbsp;</td>
+                        <td>
+                            <table > 
+                                    <tr>
+                                       <td width="10"></td>
+                                        <td align="left" width="500px" valign="top">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <h2>
+                                                            @selectedItemName
+                                                        </h2>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <h3>
+                                                            Price : @initialPrice
+                                                        </h3>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <table>
+                                                            <tr>
+                                                                <td>
+                                                                    <h3>
+                                                                        Qty : @SD.Qty
+                                                                    </h3>
+                                                                </td>                                                                
+                                                                <td>
+                                                                    <h4>
+                                                                        Total Amount : @SD.TotalAmount
+                                                                    </h4>
+                                                                </td>
+                                                            </tr>
+                                                            
+
+                                                        </table>
+
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr >
+                                                    <td>
+                                                        <h3>
+                                                            Notes :  <input type="text" class="form-control" bind="@SD.Description" />
+                                                        </h3>
+
+                                                    </td>
+                                                </tr>
+                                                <tr >
+                                                    <td>
+                                                        <h3>
+                                                            <button type="submit" class="btn btn-success" onclick="SaveShoppingetails())" style="width:220px;">
+                                                                 BUY NOW</button>
+                                                        </h3>
+
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                                }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><hr /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @if (itmDetail == null)
+                            {
+                                <p><em>Loading...</em></p>
+                            }
+                            else
+                            {
+                                <table>
+
+
+                                    <tr>
+                                        <td>
+                                            <b>Image</b>
+                                        </td>
+
+                                        <td>
+                                            <b>Item Code</b>
+                                        </td>
+
+                                        <td>
+                                            <b>Item Name</b>
+                                        </td>
+
+                                        <td>
+                                            <b>Decription</b>
+                                        </td>
+
+                                        <td>
+                                            <b>Price</b>
+                                        </td>
+
+                                        <td>
+                                            <b>User Name</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Filter By ->
+                                        </td>
+
+                                        <td>
+
+                                            Item Name :
+                                        </td>
+                                       
+
+                                    </tr>
+                                    <tbody>
+                                        @foreach (var itmDtl in itmDetail)
+                                        {
+                                            <tr>                                                
+                                                <td>
+                                                    <span>
+                                                        @itmDtl.ItemId
+                                                    </span>
+                                                </td>
+
+                                                <td>
+                                                    <span>
+                                                        @itmDtl.ItemName
+                                                    </span>
+                                                </td>
+
+                                                
+
+                                                <td>
+                                                    <span>
+                                                        @itmDtl.ItemPrice
+                                                    </span>
+                                                </td>
+                                                
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </td>
+                    </tr>
+                </table>
+
+
+
+<script type="text/javascript">
+    var UserName = "abc";
+    var selectItemImage = "";
+    var selectedItemName = "";
+    var initialPrice = 0;
+    var Messages = "";
+    ShoppingDetails[] shoppingDetails;
+    ItemDetails[] itmDetail;
+    ShoppingDetails SD = new ShoppingDetails();
+    ItemDetails ID = new ItemDetails();
+    Boolean showAddtoCart = false;
+
+    $(function AddItemtoShoppingCart(ItemDetails itemAdd) {        
+        showAddtoCart = true;
+        initialPrice = 0;
+        SD.ItemId = itemAdd.ItemId;
+        selectedItemName = itemAdd.ItemName;
+        SD.Qty = 1;
+        initialPrice = itemAdd.ItemPrice;
+        SD.TotalAmount = itemAdd.ItemPrice;
+
+        SD.UserName = UserName;                        
+        SD.ShoppingDate = DateTime.Now;
+        SD.Description = "";        
+    });
+
+    $(function SaveShoppingDetails() {
+        $.ajax({
+            type: 'POST',
+            url: '/Shopping/ShoppingDetails/',
+            data: JSON.stringify(SD),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (msg) {
+                // Notice that msg.d is used to retrieve the result object
+                alert(msg.d);
+                SD = null;
+                showAddtoCart = false;
+            }
+        });
+    });    
+</script>
+@functions {
+    string UserName = "Shanu";
+    string selectItemImage = "";
+    string selectedItemName = "";
+    int initialPrice = 0;
+    string Messages = "";
+
+    ShoppingDetails[] shoppingDetails;
+    ItemDetails[] itmDetail;
+
+    ShoppingDetails SD = new ShoppingDetails();
+    ItemDetails ID = new ItemDetails();
+
+    Boolean showAddtoCart = false;
+
+    // protected override async Task OnInitAsync()
+    // {
+    //     itmDetail = await Http.GetJsonAsync<ItemDetails[]>("/api/ItemDetails/");
+    // }                   
+
+                   
+
+    protected async Task AddItemtoShoppingCart(ItemDetails itemAdd)
+    {
+        showAddtoCart = true;
+        initialPrice = 0;
+
+        SD.ItemId = itemAdd.ItemId;
+        selectedItemName = itemAdd.ItemName;
+        SD.Qty = 1;
+        initialPrice = itemAdd.ItemPrice;
+        SD.TotalAmount = itemAdd.ItemPrice;
+
+        SD.UserName = UserName;                        
+        SD.ShoppingDate = DateTime.Now;
+        SD.Description = "";
+    }
+
+
+    void closeMessage()
+    {
+        Messages = "";
+    }
+
+    void IncreaseQty()
+    {
+        if (SD.Qty > 0)
+        {
+            SD.Qty = SD.Qty + 1;
+
+            SD.TotalAmount = initialPrice * SD.Qty;
+
+        }
+
+    }
+
+
+    void DecreaseQty()
+    {
+        if (SD.Qty > 1)
+        {
+
+            SD.Qty = SD.Qty - 1;
+            SD.TotalAmount = initialPrice * SD.Qty;
+        }
+    }
+}

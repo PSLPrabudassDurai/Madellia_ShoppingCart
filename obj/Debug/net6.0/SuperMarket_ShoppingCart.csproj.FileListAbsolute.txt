@@ -1,0 +1,8 @@
+G:\ShoppingCart\SuperMarket_ShoppingCart\obj\Debug\net6.0\SuperMarket_ShoppingCart.csproj.AssemblyReference.cache
+G:\ShoppingCart\SuperMarket_ShoppingCart\obj\Debug\net6.0\SuperMarket_ShoppingCart.GeneratedMSBuildEditorConfig.editorconfig
+G:\ShoppingCart\SuperMarket_ShoppingCart\obj\Debug\net6.0\SuperMarket_ShoppingCart.AssemblyInfoInputs.cache
+G:\ShoppingCart\SuperMarket_ShoppingCart\obj\Debug\net6.0\SuperMarket_ShoppingCart.AssemblyInfo.cs
+G:\ShoppingCart\SuperMarket_ShoppingCart\obj\Debug\net6.0\SuperMarket_ShoppingCart.csproj.CoreCompileInputs.cache
+G:\ShoppingCart\SuperMarket_ShoppingCart\obj\Debug\net6.0\SuperMarket_ShoppingCart.MvcApplicationPartsAssemblyInfo.cache
+G:\ShoppingCart\SuperMarket_ShoppingCart\obj\Debug\net6.0\SuperMarket_ShoppingCart.RazorAssemblyInfo.cache
+G:\ShoppingCart\SuperMarket_ShoppingCart\obj\Debug\net6.0\SuperMarket_ShoppingCart.RazorAssemblyInfo.cs
